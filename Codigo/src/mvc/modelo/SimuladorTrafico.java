@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import entidades.carreteras.Carretera;
-import entidades.cruces.CruceGenerico;
-import entidades.vehiculos.Vehiculo;
 import eventos.Evento;
 import excepciones.ErrorDeSimulacion;
 import principal.MapaCarreteras;
@@ -35,7 +32,7 @@ public class SimuladorTrafico implements Observador<ObservadorSimuladorTrafico> 
 				else if (arg0.getTiempo() < arg1.getTiempo()) return -1;
 				else return 1;
 			}};
-		 this.eventos = new SortedArrayList<Evento>(cmp); // estructura ordenada por “tiempo”
+		 this.eventos = new SortedArrayList<Evento>(cmp); // estructura ordenada por “tiempo” de menos a mas
 		 this.observadores = new ArrayList<>();
 	}
 	
@@ -103,18 +100,9 @@ public class SimuladorTrafico implements Observador<ObservadorSimuladorTrafico> 
 	
 	public void reinicia () {
 		
-		this.mapa = new MapaCarreteras();
+		this.mapa.reinicia();
 		this.contadorTiempo = 0;
-		Comparator<Evento> cmp = new Comparator<Evento>() {
-			@Override
-			public int compare(Evento arg0, Evento arg1) {
-				if (arg0.getTiempo() == arg1.getTiempo()) return 0;
-				else if (arg0.getTiempo() < arg1.getTiempo()) return -1;
-				else return 1;
-			}
-		};
-		
-		this.eventos = new SortedArrayList<Evento>(cmp); // estructura ordenada por “tiempo”
+		this.eventos.clear(); // estructura ordenada por “tiempo”
 		
 		this.notificaReinicia(); // Se notifica el reinicio a los observadores
 	}
@@ -171,28 +159,6 @@ public class SimuladorTrafico implements Observador<ObservadorSimuladorTrafico> 
 		if (o != null && this.observadores.contains(o)) {
 			this.observadores.remove(o);
 		}
-	}
-	
-// Metodos para las tablas:
-	
-	public List<Evento> getEventos() {
-		
-		return this.eventos;
-	}
-	
-	public List<CruceGenerico<?>> getCruces() {
-		
-		return this.mapa.getCruces();
-	}
-	
-	public List<Carretera> getCarreteras() {
-		
-		return this.mapa.getCarreteras();
-	}
-	
-	public List<Vehiculo> getVehiculos() {
-		
-		return this.mapa.getVehiculos();
 	}
 	
 }

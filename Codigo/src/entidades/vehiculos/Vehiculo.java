@@ -56,6 +56,13 @@ public class Vehiculo extends ObjetoSimulacion {
 		return localizacion;
 	}
 	
+	public String getLoc() {
+		if (this.carretera == null) {
+			return "arrived";
+		}
+		return Integer.toString(localizacion);
+	}
+	
 	public int getTiempoAveria() {
 		return tiempoAveria;
 	}
@@ -66,10 +73,10 @@ public class Vehiculo extends ObjetoSimulacion {
 	}
 	
 	public String getCarretera() {
-		if (this.carretera == null) {
-			return "arrived";
+		if (this.carretera != null) {
+			return this.carretera.getIdentificador();
 		}
-		return this.carretera.getIdentificador();
+		return null;
 	}
 	
 	public int getVelocidad() {

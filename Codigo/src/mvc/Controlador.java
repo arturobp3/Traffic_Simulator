@@ -4,14 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import codigoCampus.Ini;
 import codigoCampus.IniSection;
 import constructorEventos.ParserEventos;
-import entidades.carreteras.Carretera;
-import entidades.cruces.CruceGenerico;
-import entidades.vehiculos.Vehiculo;
 import eventos.Evento;
 import excepciones.ErrorDeSimulacion;
 import mvc.modelo.ObservadorSimuladorTrafico;
@@ -27,7 +23,6 @@ public class Controlador {
 	 private OutputStream ficheroSalida;
 	 private InputStream ficheroEntrada;
 	 private int pasosSimulacion;
-	 //...
 	 
 // CONSTRUCTORA:
 	 
@@ -87,28 +82,6 @@ public class Controlador {
 	public String getReport() {
 		return this.simulador.getReport();
 	}
-	
-// Metodo para las tablas:
-	
-	public List<Evento> getListEventos() {
-		return this.simulador.getEventos();
-	}
-	
-	public List<CruceGenerico<?>> getListCruces() {
-		
-		return this.simulador.getCruces();
-	}
-	
-	public List<Carretera> getListCarreteras() {
-		
-		return this.simulador.getCarreteras();
-	}
-	
-	public List<Vehiculo> getListVehiculos() {
-		
-		return this.simulador.getVehiculos();
-	}
-	
 	
 	//Metodos para el TextOutput
 	

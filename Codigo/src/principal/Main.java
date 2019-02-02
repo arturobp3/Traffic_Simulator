@@ -220,9 +220,10 @@ public class Main {
 		 * Main.ejecutaFicheros(directorio);
 		*/
 		
-//		Main.ParseaArgumentos(args); // Se parsean los argumentos introducidos
+		//Main.ParseaArgumentos(args); // Se parsean los argumentos introducidos
 		//Main.ejecutaFicheros("C://Users//caram//Downloads//Practica5TP//examples//basic");
 		Main.inicio(); // Se ejecuta el modo de visualizacion correspondiente
+		
 	}
 	
 	

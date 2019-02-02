@@ -1,11 +1,13 @@
 package mvc.vistaGUI.barras;
 
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import eventos.Evento;
 import excepciones.ErrorDeSimulacion;
@@ -19,14 +21,17 @@ public class PanelBarraEstado extends JPanel implements ObservadorSimuladorTrafi
 // ATRIBUTOS: 
 	
 	private JLabel infoEjecucion;
+	private JProgressBar pb;
 	
 	
 // CONSTRUCTORA:
 	
-	public PanelBarraEstado(String mensaje, Controlador controlador) {
-		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+	public PanelBarraEstado(String mensaje, Controlador controlador, JProgressBar pb) {
+		this.setLayout(new GridLayout(2,2));
+		this.pb = pb;
 		this.infoEjecucion = new JLabel(mensaje);
 		this.add(this.infoEjecucion);
+		this.add(this.pb);
 		this.setBorder(BorderFactory.createBevelBorder(1));
 		controlador.addObserver(this);
 	}

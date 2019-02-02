@@ -36,7 +36,6 @@ public class PanelObjSim<T> extends JPanel{
 		objList.setFixedCellHeight(20);
 		objList.setFixedCellWidth(140);
 		
-		
 		this.addCleanSelectionListner(objList);
 		this.add(new JScrollPane(objList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
 					 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);

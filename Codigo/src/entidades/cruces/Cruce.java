@@ -67,7 +67,7 @@ public class Cruce extends CruceGenerico<CarreteraEntrante> {
 	// Pone el semáforo de la carretera actual a “verde” y busca la siguiente carretera entrante para ponerlo a “rojo”:
 	protected void actualizaSemaforos() {
 		
-		indiceSemaforoVerde++;
+		indiceSemaforoVerde++; 
 		
 		int indice = (this.indiceSemaforoVerde) % carreterasEntrantes.size();
 		int indice2 = (this.indiceSemaforoVerde + 1) % carreterasEntrantes.size();

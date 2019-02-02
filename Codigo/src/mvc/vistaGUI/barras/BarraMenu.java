@@ -20,21 +20,25 @@ import mvc.vistaGUI.VentanaPrincipal;
 
 @SuppressWarnings("serial")
 public class BarraMenu extends JMenuBar {
+	
+	private JMenu menuFicheros, menuSimulador, menuReport;
+	
 
 	public BarraMenu(VentanaPrincipal mainWindow, Controlador controlador) {
 		super();
 		// MANEJO DE FICHEROS
-		JMenu menuFicheros = new JMenu("Ficheros");
+		menuFicheros = new JMenu("Ficheros");
 		this.add(menuFicheros);
 		this.creaMenuFicheros(menuFicheros, mainWindow);
 		// SIMULADOR
-		JMenu menuSimulador = new JMenu("Simulador");
+		menuSimulador = new JMenu("Simulador");
 		this.add(menuSimulador);
 		this.creaMenuSimulador(menuSimulador, controlador, mainWindow);
 		// INFORMES
-		JMenu menuReport = new JMenu("Informes");
+		menuReport = new JMenu("Informes");
 		this.add(menuReport);
 		this.creaMenuInformes(menuReport, mainWindow, controlador);
+		
 	}
 	
 	private void creaMenuFicheros(JMenu menu, VentanaPrincipal mainWindow) {
@@ -96,15 +100,17 @@ public class BarraMenu extends JMenuBar {
 		ejecuta.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int pasos = mainWindow.getSteps();
+				/*if (mainWindow.getHebra() == null){
+					
+					mainWindow.crearHebra();
+					mainWindow.start();
+					mainWindow.deshabilitaInterfaz();
+				}*/
 				try {
+					int pasos = mainWindow.getSteps();
 					controlador.ejecuta(pasos);
-				}
-				catch (ErrorDeSimulacion e1) {
-					e1.printStackTrace();
-				}
-				catch (IOException e1) {
-					e1.printStackTrace();
+				} catch (ErrorDeSimulacion | IOException e1) {
+					mainWindow.muestraDialogoError("Ha ocurrido un error en la ejecucion");
 				}
 			}
 		});
@@ -131,14 +137,10 @@ public class BarraMenu extends JMenuBar {
 				String s = mainWindow.getTextoEditorEventos(); // Obtenemos un string del texto que hay en el panel
 				InputStream is = new ByteArrayInputStream(s.getBytes()); // Lo transformamos
 				try {
-					if(controlador.getListEventos().size() > 0){
-						mainWindow.muestraDialogoError("Los eventos ya han sido cargados");
-					}
-					else{
-						controlador.cargaEventos(is); // Cargamos el evento
-					}
+					controlador.reinicia();
+					controlador.cargaEventos(is); // Cargamos el evento
 					
-				} catch (ErrorDeSimulacion e1) {
+				} catch (ErrorDeSimulacion | FileNotFoundException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -160,7 +162,6 @@ public class BarraMenu extends JMenuBar {
 			}
 		});
 		
-		
 		menuSimulador.add(insertarEvento);
 		menuSimulador.add(ejecuta);
 		menuSimulador.add(reinicia);
@@ -175,8 +176,6 @@ public class BarraMenu extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				// OPCIONAL
 				mainWindow.abrirDialogoInformes();
-				
-				//mainWindow.generaInformes(controlador.getReport());
 			}
 		});
 		menuReport.add(generaInformes);
@@ -189,4 +188,20 @@ public class BarraMenu extends JMenuBar {
 		});
 		menuReport.add(limpiaAreaInformes);
 	}
+	
+	
+	public void disableMenu(){
+		menuFicheros.setEnabled(false);
+		menuSimulador.setEnabled(false);
+		menuReport.setEnabled(false);
+	}
+	
+	public void enableMenu(){
+		menuFicheros.setEnabled(true);
+		menuSimulador.setEnabled(true);
+		menuReport.setEnabled(true);
+	}
+	
+	
+	
 }

@@ -75,6 +75,28 @@ public class CarreteraEntranteConIntervalo extends CarreteraEntrante {
 		this.unidadesDeTiempoUsadas = unidadesDeTiempoUsadas;
 	} 
 	
+	// GetCrucesVerde en CruceGenerico
+	@Override
+	public String listarVehiculos(){
+		String report = "";
+		
+		if(colaVehiculos.size() > 0){
+			report = "[";
+			
+			for(int i = 0; i < colaVehiculos.size(); i++){
+				report += colaVehiculos.get(i).getIdentificador();
+				if(i < colaVehiculos.size() - 1){
+					report += ",";
+				}
+			}
+			report += "]";
+		}
+		else{
+			report = "[]";
+		}
+		report += ", " + this.getIntervaloDeTiempo();
 	
+		return report;
+	}
 	
 }

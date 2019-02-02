@@ -25,7 +25,6 @@ public abstract class ObjetoSimulacion {
 	
 	@Override
 	public String toString() {
-		// Falta por completar¿?
 		return "";
 	}
 	

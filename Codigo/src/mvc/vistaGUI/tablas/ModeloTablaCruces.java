@@ -13,7 +13,6 @@ public class ModeloTablaCruces extends ModeloTabla<CruceGenerico<?>> {
 
 	public ModeloTablaCruces(String[] columnIdEventos, Controlador ctrl) {
 		super(columnIdEventos, ctrl);
-		this.lista = ctrl.getListCruces();
 	}
 
 	@Override // Necesario para que se visualicen los datos

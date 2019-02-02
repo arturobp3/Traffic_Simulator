@@ -14,7 +14,6 @@ public class ModeloTablaEventos extends ModeloTabla<Evento> {
 	
 	public ModeloTablaEventos(String[] columnIdEventos, Controlador ctrl) {
 		super(columnIdEventos, ctrl);
-		this.lista = ctrl.getListEventos(); // Cargamos la lista con los eventos leidos
 	}
 
 

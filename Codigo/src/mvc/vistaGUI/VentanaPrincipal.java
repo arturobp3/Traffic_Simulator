@@ -20,9 +20,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+//import javax.swing.UIManager;
+//import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 
 import entidades.carreteras.Carretera;
@@ -48,7 +50,7 @@ import mvc.vistaGUI.tablas.PanelTabla;
 import principal.MapaCarreteras;
 
 @SuppressWarnings("serial")
-public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafico {
+public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafico{
 
 // ATRIBUTOS:
 	
@@ -62,10 +64,13 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 	// MENU AND TOOL BAR
 	private JFileChooser fc;
 	private ToolBar toolbar;
+	private BarraMenu menubar;
 	// GRAPHIC PANEL
 	private ComponenteMapa componenteMapa;
 	// STATUS BAR (INFO AT THE BOTTOM OF THE WINDOW)
 	private PanelBarraEstado panelBarraEstado;
+	
+	private JProgressBar pb;
 
 	// INFERIOR PANEL
 	static private final String[] columnIdVehiculo = { "ID", "Carretera", "Localizacion", "Vel.", "Km", "Tiempo. Ave.", "Itinerario" };
@@ -80,6 +85,8 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 	private File ficheroActual;
 	private Controlador controlador;
 	
+	private Thread t = null;
+	
 // CONSTRUCTORA:
 	
 	public VentanaPrincipal(String ficheroEntrada, Controlador ctrl) throws FileNotFoundException {
@@ -87,6 +94,8 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 		super("Simulador de Trafico");
 		this.controlador = ctrl;
 		this.ficheroActual = ficheroEntrada != null ? new File(ficheroEntrada) : null;
+	
+		
 		this.initGUI();
 		// Añadimos la ventana principal como observadora
 		ctrl.addObserver(this);
@@ -108,9 +117,7 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 			
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		
@@ -150,6 +157,7 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 		
 		// BARRA DE ESTADO INFERIOR
 		// (contiene una JLabel para mostrar el estado del simulador)
+		pb = new JProgressBar(0, 100);
 		this.addBarraEstado(panelPrincipal);
 		
 		// PANEL QUE CONTIENE EL RESTO DE COMPONENTES
@@ -162,7 +170,7 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 		
 		
 		// MENU (Mencionado en Diap. 39)
-		BarraMenu menubar = new BarraMenu(this, this.controlador);
+		menubar = new BarraMenu(this, this.controlador);
 		this.setJMenuBar(menubar);
 
 		// PANEL INFERIOR
@@ -191,8 +199,8 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 	}
 	
 	private void addBarraEstado(JPanel panelPrincipal) {
-		this.panelBarraEstado = new PanelBarraEstado("Bienvenido al simulador", this.controlador);
-		panelPrincipal.add(this.panelBarraEstado, BorderLayout.PAGE_END);
+		this.panelBarraEstado = new PanelBarraEstado("Bienvenido al simulador", this.controlador, pb);
+		panelPrincipal.add(panelBarraEstado, BorderLayout.PAGE_END);
 	}
 	
 	private JPanel createPanelCentral() {
@@ -212,7 +220,7 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 		this.panelColaEventos = new PanelTabla<Evento>("Cola Eventos: ", new ModeloTablaEventos(VentanaPrincipal.columnIdEventos, this.controlador));
 		panelSuperior.add(panelColaEventos);
 		
-		this.panelInformes = new PanelInformes("Informes: ", false, this.controlador);
+		this.panelInformes = new PanelInformes("Informes: ", false);
 		panelSuperior.add(panelInformes);
 
 		panelCentral.add(panelSuperior);
@@ -258,12 +266,10 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 
 	@Override
 	public void avanza(int tiempo, MapaCarreteras mapa, List<Evento> eventos) {
-		
 	}
 
 	@Override
 	public void addEvento(int tiempo, MapaCarreteras mapa, List<Evento> eventos) {
-		JOptionPane.showMessageDialog(this, "Se ha añadido un evento", "Eventos", JOptionPane.INFORMATION_MESSAGE, null);
 	}
 
 	@Override
@@ -358,14 +364,21 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 	public int getTime(){
 		return this.toolbar.getTime();
 	}
-
 	
+	public int getDelay(){
+		return this.toolbar.getDelay();
+	}
+	 
 	public void muestraDialogoError(String string) {
 		JOptionPane.showMessageDialog(this, string, "Error", JOptionPane.ERROR_MESSAGE, null);
 	}
 	
 	public void muestraDialogoAdvertencia(String string) {
 		JOptionPane.showMessageDialog(this, string, "Warning", JOptionPane.WARNING_MESSAGE, null);
+	}
+	
+	public void muestraDialogoInformativo(String string) {
+		JOptionPane.showMessageDialog(this, string, "Info", JOptionPane.INFORMATION_MESSAGE, null);
 	}
 
 	// Este metodo lo llama cargaFichero(), y a este lo llama creaMenuFicheros() de BarraMenu
@@ -420,9 +433,117 @@ public class VentanaPrincipal extends JFrame implements ObservadorSimuladorTrafi
 		this.panelEditorEventos.limpiar();
 	}
 	
-	//Usado por el JDialog
+	// Usado por el JDialog
 	
 	public void abrirDialogoInformes(){
 		this.dialogoInformes.abrir();
 	}
+	
+	// Usado por la Practica 6
+	
+	public void deshabilitaInterfaz(){
+		menubar.disableMenu();
+		toolbar.disableButtons(this);
+	}
+	
+	public void habilitaInterfaz(){
+		menubar.enableMenu();
+		toolbar.enableButtons();
+	}
+	
+	
+	//Metodos para la hebra
+	public Thread getHebra(){
+		return t;
+	}
+	
+	public void start() {
+		t.start();
+	}
+	
+	public void interrupt(){
+		t.interrupt();
+		t = null;
+	}
+
+	
+	// CLASE LOCAL DE LA HEBRA
+	
+	public void crearHebra() {
+		class ExecutionThread extends Thread {
+			
+			
+			public void run() {
+				pb.setMaximum(getSteps());
+				try {
+					int i = 0;
+					while (i < getSteps()) { // Ejecutaremos n pasos el simulador, para ello:
+						controlador.ejecuta(1); // Ejecutamos una unidad de tiempo en cada iteracion
+						ExecutionThread.sleep(getDelay()); // Dormimos el hilo el tiempo seleccionado
+						++i; // Incrementamos el contador
+						pb.setString(Integer.toString(i));
+					
+						pb.setValue(i);
+						
+					}
+				} catch (ErrorDeSimulacion | IOException e) {
+					muestraDialogoError("Ha ocurrido un error en la ejecucion");
+				}
+				catch (InterruptedException e) {
+					muestraDialogoInformativo("Se ha detenido la ejecucion");
+
+				}
+				finally {
+					t = null;
+					pb.setValue(0);
+					habilitaInterfaz();
+				}
+			}
+		}
+		t = new Thread(new ExecutionThread());
+	}
+	
+	
+	//------------------------------------------------------------
+	/* Añadir espacios entre componentes, tres maneras:
+	 * 
+	 * panelPrincipal.add(Box.createVerticalStrut(100)); Añade un espacio de 100px en vertical (siendo panelPrincipal un JPanel) 
+	 * panelPrincipal.add(Box.createHorizontalStrut(100)); Se añaden como componentes asi que hay que tener cuidado con el layout
+	 * ---------------------------------------------------------------------------------------------------------------------------
+	 * GridLayout gl = new GridLayout(1,2, 150, 100); //El 150 y el 100 son los espacios verticales y horizontales respectivamente
+	 * panelPrincipal.setLayout(gl);
+	 * ---------------------------------------------------------------------------------------------------------------------------
+	 * addSeparator(); //Solo en JMenu (creo)
+	 * en Paneles se puede usar: panel.add(new JSeparator());
+	 */
+	//------------------------------------------------------------
+	
+	
+	//------------------------------------------------------------
+	// En un comboBox, getSelectedItem() te da el objeto seleccionado
+	//
+	//------------------------------------------------------------
+	/*
+	JCheckBox nc = new JCheckBox();
+	
+	nc.addItemListener(new ItemListener(){
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			
+			if(e.getStateChange() == ItemEvent.SELECTED){
+				
+			}
+			else{
+				
+			}
+		}
+		
+	});*/
+	
+	/*
+	 * Para que los RadioButton se desactiven al pulsar otros, añadirlos como componentes a un:
+	 * ButtonGroup
+	 * */
+	
 }

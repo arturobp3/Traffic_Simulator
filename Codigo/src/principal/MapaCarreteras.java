@@ -9,6 +9,8 @@ import excepciones.ErrorDeSimulacion;
 
 public class MapaCarreteras {
 
+// ATRIBUTOS:
+	
 	private List<Carretera> carreteras;
 	private List<CruceGenerico<?>> cruces;
 	private List<Vehiculo> vehiculos;
@@ -16,8 +18,9 @@ public class MapaCarreteras {
 	private Map<String, Carretera> mapaDeCarreteras;
 	private Map<String, CruceGenerico<?>> mapaDeCruces;
 	private Map<String, Vehiculo> mapaDeVehiculos;
-	 
-	//...
+	
+	
+// CONSTRUCTORA:
 	
 	public MapaCarreteras() {
 		carreteras = new ArrayList<Carretera>(); // Insercion y modificacion eficientes
@@ -33,6 +36,9 @@ public class MapaCarreteras {
 		 // Para carreteras, cruces y vehículos puede usarse ArrayList.
 		 // Para los mapas puede usarse HashMap
 	}
+	
+
+// METODOS:
 	
 	public void addCruce(String idCruce, CruceGenerico<?> cruceGenerico) throws ErrorDeSimulacion {
 		
@@ -176,5 +182,16 @@ public class MapaCarreteras {
 	public List<Vehiculo> getVehiculos() {
 		
 		return this.vehiculos;
+	}
+	
+// Metodo reinicia utilizado en controlador:
+	
+	public void reinicia() {
+		this.carreteras.clear();
+		this.cruces.clear();
+		this.vehiculos.clear();
+		this.mapaDeCarreteras.clear();
+		this.mapaDeCruces.clear();
+		this.mapaDeVehiculos.clear();
 	}
 }

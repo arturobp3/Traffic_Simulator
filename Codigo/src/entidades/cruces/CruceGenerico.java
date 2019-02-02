@@ -112,7 +112,8 @@ abstract public class CruceGenerico<T extends CarreteraEntrante> extends ObjetoS
 		int i;
 		for (i = 0; i < this.carreterasEntrantes.size(); i++) {
 			if(carreterasEntrantes.get(i).getSemaforo()){
-				res += carreterasEntrantes.get(i).toString() + " ";
+				
+				res += carreterasEntrantes.get(i).toString() + "," + carreterasEntrantes.get(i).listarVehiculos();
 			}
 		}
 		return res;
@@ -123,13 +124,13 @@ abstract public class CruceGenerico<T extends CarreteraEntrante> extends ObjetoS
 		int i;
 		for (i = 0; i < this.carreterasEntrantes.size(); i++) {
 			if(!carreterasEntrantes.get(i).getSemaforo()){
-				res += carreterasEntrantes.get(i).toString() + " ";
+				res += carreterasEntrantes.get(i).toString() + ", " + carreterasEntrantes.get(i).listarVehiculos();
 			}
 		}
 		return res;
 	}
 	
-	//Necesario para el JDialog de informes
+	// Necesario para el JDialog de informes
 	@Override
 	public String toString() {
 		return this.getId();

@@ -35,4 +35,9 @@ public abstract class ModeloTabla<T> extends DefaultTableModel implements Observ
 	
 	@Override
 	public int getRowCount() { return this.lista == null ? 0 : this.lista.size(); }
+	
+	// Para evitar que se modifiquen las tablas
+	public boolean isCellEditable(int indiceFila, int indiceColumna) {
+		return false;
+	}
 }

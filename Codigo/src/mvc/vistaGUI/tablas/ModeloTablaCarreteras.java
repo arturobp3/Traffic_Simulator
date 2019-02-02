@@ -13,7 +13,6 @@ public class ModeloTablaCarreteras extends ModeloTabla<Carretera> {
 
 	public ModeloTablaCarreteras(String[] columnIdEventos, Controlador ctrl) {
 		super(columnIdEventos, ctrl);
-		this.lista = ctrl.getListCarreteras();
 	}
 
 	@Override // Necesario para que se visualicen los datos

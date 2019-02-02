@@ -13,7 +13,6 @@ public class ModeloTablaVehiculos extends ModeloTabla<Vehiculo> {
 
 	public ModeloTablaVehiculos(String[] columnIdEventos, Controlador ctrl) {
 		super(columnIdEventos, ctrl);
-		this.lista = ctrl.getListVehiculos();
 	}
 
 	@Override // Necesario para que se visualicen los datos
@@ -22,7 +21,7 @@ public class ModeloTablaVehiculos extends ModeloTabla<Vehiculo> {
 		switch (indiceCol) {
 			case 0: s = this.lista.get(indiceFil).getIdentificador(); break;
 			case 1: s = this.lista.get(indiceFil).getCarretera(); break; // Carretera actual
-			case 2: s = this.lista.get(indiceFil).getLocalizacion(); break; // Localizacion
+			case 2: s = this.lista.get(indiceFil).getLoc(); break; // Localizacion
 			case 3: s = this.lista.get(indiceFil).getVelocidad(); break; 	// Velocidad actual
 			case 4: s = this.lista.get(indiceFil).getKilometraje(); break; 	// Kilometraje
 			case 5: s = this.lista.get(indiceFil).getTiempoAveria(); break; // Tiempo averia

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import entidades.carreteras.Carretera;
 import entidades.cruces.CruceGenerico;
@@ -28,7 +29,7 @@ public class DialogoInformes extends JDialog implements ObservadorSimuladorTrafi
 	private PanelObjSim<CruceGenerico<?>> panelCruces;
 	//...
 	public static final char TECLALIMPIAR = 99; // Añadido por PanelObjSim, Letra "c"
-	public static final char TECLA_SELECCIONAR_TODO = 97; //Letra "a" (no es ese char)
+	public static final char TECLA_SELECCIONAR_TODO = 97; //Letra "a" 
 	
 // CONSTRUCTORA:
 	
@@ -116,23 +117,38 @@ public class DialogoInformes extends JDialog implements ObservadorSimuladorTrafi
 	
 	
 	
-	//Metodos notificadores
+	// Metodos notificadores
 	
 	@Override
 	public void avanza(int tiempo, MapaCarreteras mapa, List<Evento> eventos) {
-		this.setMapa(mapa);
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				setMapa(mapa);
+			}
+		});
+		
 	}
 	
 	
-	@Override
 	public void addEvento(int tiempo, MapaCarreteras mapa, List<Evento> eventos) {
-		this.setMapa(mapa);
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				setMapa(mapa);
+			}
+		});
 	}
 	
 	
 	@Override
 	public void reinicia(int tiempo, MapaCarreteras mapa, List<Evento> eventos) {
-		this.setMapa(mapa);
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				setMapa(mapa);
+			}
+		});
 	}
 
 
