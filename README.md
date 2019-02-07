@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Traffic Simulator" src="https://github.com/arturobp3/Machine_Learning/blob/master/docs/ml.png">
+  <img alt="Traffic Simulator" src="https://github.com/arturobp3/Traffic_Simulator/blob/master/iconos/fondo.jpg">
 </p>
 
 * [Executable file](https://github.com/arturobp3/Traffic_Simulator/blob/master/Traffic%20Simulator.jar)
@@ -19,7 +19,7 @@
 
 
 <p align="center">
-  <img alt="Graphical user interface" src="https://github.com/arturobp3/Traffic_Simulator/blob/master/iconos/ejemplo%20simulacion.png">
+  <img alt="Graphical user interface: " src="https://github.com/arturobp3/Traffic_Simulator/blob/master/iconos/ejemplo%20simulacion.png">
 </p>
 
 
