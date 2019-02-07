@@ -23,4 +23,10 @@
   <img src="https://github.com/arturobp3/Traffic_Simulator/blob/master/iconos/ejemplo%20simulacion.png">
 </p>
 
+The map is composed of 4 elements:
+
+* Crossroads: Blue nodes that connect roads 
+* Roads: Lines that contain all type of vehicles. They are controlled at the end of them by traffic lights.
+  * Vehicles: Pink circles that move over the roads.
+  * Traffic Lights: Triangle located at the crossroads. They can be green or red.
 
